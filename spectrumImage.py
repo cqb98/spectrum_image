@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import math
 import struct
 import sys
- 
+
 import FFT
 
 
@@ -68,9 +68,9 @@ photo = Img.point(table, '1')
 xlen=img.shape[1]
 ylen=img.shape[0]
 
-length=2**math.ceil(math.log2(xlen*xscale))
+length=2**math.ceil(math.log2(xlen))
 print("FFT point:",length)
-print("file size:",(2*length*ylen*yscale)// (1e3),"kb")
+print("file size:",(2*length*ylen*xscale*yscale)// (1e3),"kb")
 
 spectrums=[]
 f=open("out.txt","wb")
@@ -87,11 +87,12 @@ for i in range(ylen):
 		'''
 		if(val< (5/256)):
 			val=0
-		s+=([val]*xscale);
+		#s+=([val]*xscale);
+		s+=[val];
 
 
-	#s=[10]*(xlen*xscale)
-	d=line(s,xlen*xscale)
+	#d=line(s,xlen*xscale)
+	d=line(s,xlen)
 	#print(d)
 	#spectrums.append(s);
 
@@ -100,7 +101,7 @@ for i in range(ylen):
 	for v in d:
 		b= struct.pack("bb", limitS8(v.real) , limitS8(v.imag) ) 
 		bin+=b
-	f.write(yscale*bin)
+	f.write(yscale*xscale*bin)
 
 f.close()
 
